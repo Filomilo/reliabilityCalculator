@@ -1,23 +1,50 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+
+
+import InputNumber from 'primevue/inputnumber';
+import { ref, type Ref } from 'vue';
+
+
+const numberA: Ref<number> =ref(0)
+
+const numberB: Ref<number> =ref(0)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="main">
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+<div class="inputContainer">
+Number A:
+<InputNumber v-model="numberA" class="inputNumber" fluid  />
+</div>
+<div class="inputContainer" >
+Number B:
+<InputNumber v-model="numberB" class="inputNumber" fluid   />
+</div>
+<div class="result">
+A+B={{numberA + numberB}}
 
-  <RouterView />
+</div>
+
+<div class="result">
+A-B={{numberA - numberB}}
+</div>
+
+<div class="result">
+A*B={{numberA * numberB}}
+</div>
+
+<div class="result">
+A/B={{numberA / numberB}}
+</div>
+
+  </div>
+
+
 </template>
 
 <style scoped>
@@ -81,5 +108,37 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+.inputContainer{
+  margin-top:20px;
+  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  width:150px;
+  align-items:center;
+}
+.inputNumber{
+  width:150px;
+  background-color: rgb(216, 216, 216)
+}
+
+.result{
+  margin-top:20px;
+  font-size:20px;
+  font-weight:bold;
+  color: #4a4a4a;
+  text-align:center;
+  width:90vw;
+}
+
+
+.main{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:90vh;
 }
 </style>
