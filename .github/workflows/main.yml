@@ -22,7 +22,7 @@ jobs:
           echo 'Deploying to gh-pages...'
           git add dist -f
           git commit -m 'Deploy' 
-          git push origin `git subtree split --prefix dist main`:gh-pages --force
+          git push origin `git subtree split --prefix dist master`:gh-pages --force
           echo 'Done'
         env:
           github-token: ${{ secrets.GH_TOKEN }}
