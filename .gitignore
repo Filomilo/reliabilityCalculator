@@ -29,3 +29,5 @@ coverage
 
 *.tsbuildinfo
 /public
+/src/pythonSrc/__pycache__
+/src/pythonSrc/.vscode
