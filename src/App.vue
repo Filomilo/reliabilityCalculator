@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-
+import { pyodideModule } from './modules/pyodide';
 
 
 import InputNumber from 'primevue/inputnumber';
 import { ref, type Ref } from 'vue';
+import Loading from './components/Loading.vue';
 
 
 const numberA: Ref<number> =ref(0)
@@ -15,7 +16,12 @@ const numberB: Ref<number> =ref(0)
 
 <template>
 
-  <div class="main">
+<div class="app centerEverything" v-if="pyodideModule.isInitialized.value==false">
+  <Loading  label="Loading.."/>
+
+</div>
+<div class="app" v-else>
+ <div class="main">
 
 <div class="inputContainer">
 Number A:
@@ -43,6 +49,8 @@ A/B={{numberA / numberB}}
 </div>
 
   </div>
+
+</div>
 
 
 </template>
@@ -140,5 +148,14 @@ nav a:first-of-type {
   align-items:center;
   justify-content:center;
   height:90vh;
+}
+
+.centerEverything{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  overflow: hidden;
+  ;
 }
 </style>

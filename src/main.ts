@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
 import Noir from './presets/Noir';
+import { pyodideModule } from './modules/pyodide';
+ import LoadScript from "vue-plugin-load-script";
 
 const app = createApp(App)
 
@@ -19,4 +21,6 @@ app.use(PrimeVue, {
         }
     }
 });
+  app.use(LoadScript);
+pyodideModule.initialize(['RelCalcualtor.py']);
 app.mount('#app')
