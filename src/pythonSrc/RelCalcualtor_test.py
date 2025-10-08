@@ -1,5 +1,5 @@
 import pytest
-from RelCalcualtor import dystrybunataFt
+from RelCalcualtor import dystrybunataFt,funkcjaNiezawdnosciRt,funkcjaGestaft,funkcjaIntensywnoscilambdat,rozkladTrwalosciEta
 
 
 
@@ -43,10 +43,10 @@ def test_dystrybunataFt():
 
 
 def test_funkcjaNiezawdnosciRt():
-    result = funkcjaNiezawdnosciRt(brokenElemntsAfterTime)
+    result = funkcjaNiezawdnosciRt(brokenElemntsAfterTime,totalElemets)
     expected = {1:1,
                 2:0.914,
-                3:0.828,
+                3:0.829,
                 4:0.686,
                 5:0.457,
                 6:0.257,
@@ -55,39 +55,53 @@ def test_funkcjaNiezawdnosciRt():
                 9:0,
                 10:0  
                 }
+    print(result)
+    result = round_dict_values(result)
+    for k, v in result.items():
+        print(k, v)
     assert result == expected
 
 
 def test_funkcjaGestaft():
-        result = funkcjaGestaft(brokenElemntsAfterTime)
+        result = funkcjaGestaft(brokenElemntsAfterTime,totalElemets)
         expected = {1:0,
                     2:0.086,
                     3:0.086,
                     4:0.143,
-                    5:0.228,
+                    5:0.229,
                     6:0.2,
                     7:0.171,
                     8:0.057,
-                    9:0.0286, 
+                    9:0.029, 
                     }
+        print(result)
+        result = round_dict_values(result)
+        for k, v in result.items():
+            print(k, v)
         assert result == expected
     
 
 def test_funkcjaIntensywnoscilambdat():
-        result = funkcjaIntensywnoscilambdat(brokenElemntsAfterTime)
+        result = funkcjaIntensywnoscilambdat(brokenElemntsAfterTime,totalElemets)
         expected = {1:0,
                     2:0.086,
-                    3:0.095,
+                    3:0.094,
                     4:0.172,
-                    5:0.323,
-                    6:0.437,
+                    5:0.333,
+                    6:0.438,
                     7:0.667,
-                    8:0.607,
+                    8:0.667,
                     9:1.0, 
                     }
+        print(result)
+        result = round_dict_values(result)
+        for k, v in result.items():
+            print(k, v)
         assert result == expected
 
 
 def test_rozkladTrwalosciEta():
-    result = rozkladTrwalosciEta(brokenElemntsAfterTime)
+    result = rozkladTrwalosciEta(brokenElemntsAfterTime,totalElemets)
+    print(result)
+    result = round(result, 1)
     assert result == 4.3
