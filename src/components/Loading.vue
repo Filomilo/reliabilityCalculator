@@ -6,7 +6,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps } from 'vue';
 const props = defineProps({
   label: {
@@ -57,5 +57,6 @@ const props = defineProps({
   gap:10px;
   font-size:1.5rem;
   color:#444;
+
 }
 </style>

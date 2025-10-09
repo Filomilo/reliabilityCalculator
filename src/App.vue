@@ -7,9 +7,8 @@ import { pyodideModule } from './modules/pyodide';
 import InputNumber from 'primevue/inputnumber';
 import { Button } from 'primevue';
 import { computed, ref, type Ref, type ComputedRef, watch } from 'vue';
-import Loading from './components/Loading.vue';
 import { dystrybunataFt, funkcjaNiezawdnosciRt,funkcjaGestaft,funkcjaIntensywnoscilambdat,rozkladTrwalosciEta } from './modules/RelCalculator';
-
+import Loading from '@/components/Loading.vue';
 const numberOfElements: Ref<number> =ref(10)
 
 const numberOfTimeSteps: Ref<number> =ref(10)
@@ -40,7 +39,6 @@ const caluclateValues=async()=>{
   console.log("calculating values")
 
   F.value=dystrybunataFt(radomValues.value,numberOfElements.value)
-    document.f= F.value
   R.value=funkcjaNiezawdnosciRt(radomValues.value,numberOfElements.value)
   f.value=funkcjaGestaft(radomValues.value,numberOfElements.value)
 lam.value=funkcjaIntensywnoscilambdat(radomValues.value,numberOfElements.value)

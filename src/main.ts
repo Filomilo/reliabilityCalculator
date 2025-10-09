@@ -22,5 +22,5 @@ app.use(PrimeVue, {
     }
 });
   app.use(LoadScript);
-pyodideModule.initialize(['RelCalcualtor.py']);
+pyodideModule.initialize();
 app.mount('#app')
