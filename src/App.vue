@@ -99,7 +99,7 @@ const textBookExample = () => {
         <table class="resultsTable">
           <thead>
             <tr>
-              <th>Time Step</th>
+              <th>t</th>
               <th>Value</th>
             </tr>
           </thead>
@@ -111,14 +111,76 @@ const textBookExample = () => {
           </tbody>
         </table>
 
-        <h3>Calculated Functions</h3>
-        <ul class="resultsList">
-          <li><strong>F:</strong> {{ F }}</li>
-          <li><strong>R:</strong> {{ R }}</li>
-          <li><strong>f:</strong> {{ f }}</li>
-          <li><strong>λ:</strong> {{ lam }}</li>
-          <li><strong>E:</strong> {{ E }}</li>
-        </ul>
+       <h3>F*(t)</h3>
+        <table class="resultsTable">
+         <thead>
+           <tr>
+              <th>t</th>
+              <th>F</th>
+            </tr>
+          </thead>
+         <tbody>
+           <tr v-for="(val, key) in F" :key="key">
+              <td>{{ key }}</td>
+              <td>{{ val }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>R*(t)</h3>
+        <table class="resultsTable">
+         <thead>
+           <tr>
+              <th>t</th>
+              <th>R</th>
+            </tr>
+          </thead>
+         <tbody>
+           <tr v-for="(val, key) in R" :key="key">
+              <td>{{ key }}</td>
+              <td>{{ val }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>f*(t)</h3>
+        <table class="resultsTable">
+         <thead>
+           <tr>
+              <th>t</th>
+              <th>f</th>
+            </tr>
+          </thead>
+         <tbody>
+           <tr v-for="(val, key) in f" :key="key">
+              <td>{{ key }}</td>
+              <td>{{ val }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>lam*(t)</h3>
+        <table class="resultsTable">
+         <thead>
+           <tr>
+              <th>t</th>
+              <th>lam</th>
+            </tr>
+          </thead>
+         <tbody>
+           <tr v-for="(val, key) in lam" :key="key">
+              <td>{{ key }}</td>
+              <td>{{ val }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>E[T]</h3>
+<p class="resultValue">
+  {{ E !== undefined && E !== null ? E.toFixed(3) : '–' }}
+</p>
+
+        
       </div>
     </div>
 
@@ -130,7 +192,32 @@ const textBookExample = () => {
   </div>
 </template>
 
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #f5f5f5;
+  min-height: 100vh;
+  width: 100%;  
+}
+</style>
+
 <style scoped>
+/* Tło aplikacji*/
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #121212; 
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;         
+  color: #f5f5f5;            
+}
 /* Layout główny */
 .main {
   display: flex;
@@ -171,12 +258,14 @@ const textBookExample = () => {
   width: 80vw;
   max-width: 900px;
   margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .resultsTable {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1.5rem;
+  table-layout: fixed;
 }
 
 .resultsTable th,
@@ -200,14 +289,36 @@ const textBookExample = () => {
   margin: 0.3rem 0;
   font-size: 1rem;
 }
+.resultValue {
+  background-color: #1e1e1e;
+  border: 1px solid #555;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
+  min-width: 120px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #f5f5f5;
+}
 
 /* Przyciski */
 .buttonsWrapper {
+  background-color: #333;
+  color: #fff;
+  border-radius: 6px;
+  border: 1px solid #555;
+  transition: background 0.2s;
   margin: 2rem 0 3rem; /* odstęp od dołu strony */
   display: flex;
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.buttonsWrapper button:hover {
+  background-color: #444 !important;
 }
 
 /* Centrowanie przy ładowaniu */
@@ -239,6 +350,11 @@ const textBookExample = () => {
 
   .inputNumber {
     width: 100%;
+    background: #2a2a2a;
+   color: #fff;
+   border: 1px solid #444;
+   border-radius: 6px;
+   padding: 0.3rem 0.5rem;
   }
 }
 </style>
