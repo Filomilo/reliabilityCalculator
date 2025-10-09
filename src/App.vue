@@ -5,13 +5,73 @@ import { pyodideModule } from './modules/pyodide';
 
 
 import InputNumber from 'primevue/inputnumber';
-import { ref, type Ref } from 'vue';
+import { Button } from 'primevue';
+import { computed, ref, type Ref, type ComputedRef, watch } from 'vue';
 import Loading from './components/Loading.vue';
+import { dystrybunataFt, funkcjaNiezawdnosciRt,funkcjaGestaft,funkcjaIntensywnoscilambdat,rozkladTrwalosciEta } from './modules/RelCalculator';
+
+const numberOfElements: Ref<number> =ref(10)
+
+const numberOfTimeSteps: Ref<number> =ref(10)
+
+const radomValues: Ref<any> =ref({})
 
 
-const numberA: Ref<number> =ref(0)
+const F: Ref<any>= ref()
+  const R: Ref<any>= ref()
+    const f: Ref<any>= ref()
+      const lam: Ref<any>= ref()
+         const E: Ref<any>= ref()
+watch([numberOfElements, numberOfTimeSteps], () => {
+generateRandomValues()
+})
 
-const numberB: Ref<number> =ref(0)
+const generateRandomValues=()=>{
+  const dict: any={}
+  for(let i=1;i<numberOfTimeSteps.value+1;i++){
+   dict[i]=(Math.random()*numberOfElements.value).toFixed(0)
+  }
+
+  radomValues.value= dict
+}
+
+const caluclateValues=async()=>{
+
+  console.log("calculating values")
+
+  F.value=dystrybunataFt(radomValues.value,numberOfElements.value)
+    document.f= F.value
+  R.value=funkcjaNiezawdnosciRt(radomValues.value,numberOfElements.value)
+  f.value=funkcjaGestaft(radomValues.value,numberOfElements.value)
+lam.value=funkcjaIntensywnoscilambdat(radomValues.value,numberOfElements.value)
+E.value=rozkladTrwalosciEta(radomValues.value,numberOfElements.value)
+}
+
+watch(pyodideModule.isInitialized,(val)=>{
+if(val===true){
+  generateRandomValues()
+}
+})
+
+
+
+const textBookExample=()=>{
+  numberOfElements.value=35
+  numberOfTimeSteps.value=10
+  radomValues.value={
+    1:0,
+    2:3,
+    3:3,
+    4:5,
+    5:8,
+    6:7,
+    7:6,
+    8:2,
+    9:1,
+    10:0
+  }
+}
+
 </script>
 
 <template>
@@ -24,32 +84,42 @@ const numberB: Ref<number> =ref(0)
  <div class="main">
 
 <div class="inputContainer">
-Number A:
-<InputNumber v-model="numberA" class="inputNumber" fluid  />
+Number of elements
+<InputNumber v-model="numberOfElements" class="inputNumber" fluid  />
 </div>
 <div class="inputContainer" >
-Number B:
-<InputNumber v-model="numberB" class="inputNumber" fluid   />
+Number of time steps
+<InputNumber v-model="numberOfTimeSteps" class="inputNumber" fluid   />
 </div>
-<div class="result">
-A+B={{numberA + numberB}}
+<div class="resultsContainer">
 
-</div>
+values:
+{{ JSON.stringify(radomValues) }}
+<br>
+F:
+{{ JSON.stringify(F) }}
+<br>
+R:
+{{ JSON.stringify(R) }}
+<br>
 
-<div class="result">
-A-B={{numberA - numberB}}
-</div>
+f:
+{{ JSON.stringify(f) }}
+<br>
+lam:
 
-<div class="result">
-A*B={{numberA * numberB}}
-</div>
+{{ JSON.stringify(lam) }}
 
-<div class="result">
-A/B={{numberA / numberB}}
-</div>
 
+<br>
+E:
+{{ JSON.stringify(E) }}
   </div>
 
+</div>
+
+<Button label="caluculate"  @click="caluclateValues"/>
+<Button label="textbook example"  @click="textBookExample"/>
 </div>
 
 
@@ -157,5 +227,17 @@ nav a:first-of-type {
   height:100vh;
   overflow: hidden;
   ;
+}
+
+
+
+.resultsContainer{
+  border: black solid 2px;
+  width: 80vw;
+  overflow: scroll;
+}
+
+button{
+  margin: 1rem;
 }
 </style>
