@@ -10,17 +10,23 @@ import { pyodideModule } from './modules/pyodide';
 
 const app = createApp(App)
 
+function toggleDarkMode() {
+    document.documentElement.classList.toggle('my-app-dark');
+}
+
 app.use(router)
 app.use(PrimeVue, {
     theme: {
         preset: Noir,
         options: {
             prefix: 'p',
-            darkModeSelector: '.p-dark',
+            darkModeSelector: '.my-app-dark',
             cssLayer: false,
         }
     }
 });
   app.use(LoadScript);
 pyodideModule.initialize();
+
+toggleDarkMode();
 app.mount('#app')

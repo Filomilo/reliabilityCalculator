@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, type Ref, watch } from 'vue'
+import { type ComputedRef, ref, type Ref, watch, computed } from 'vue'
 import InputNumber from 'primevue/inputnumber'
+import DatePicker from 'primevue/datepicker'
+import Dropdown from 'primevue/dropdown'
 import { Button } from 'primevue'
 import Loading from '@/components/Loading.vue'
 import { pyodideModule } from './modules/pyodide'
@@ -15,7 +17,15 @@ import {
 // Refs
 const numberOfElements: Ref<number> = ref(10)
 const numberOfTimeSteps: Ref<number> = ref(10)
-const radomValues: Ref<any> = ref({})
+const Values: Ref<any> = ref({})
+
+
+const timeAddtion:ComputedRef<num>=computed(()=>{
+  return durationStep.value * (selectedPeriosd.value as any) .value
+})
+
+  const datetimeStart = ref(new Date());
+    const durationStep=ref( 1);
 
 const F: Ref<any> = ref()
 const R: Ref<any> = ref()
@@ -23,16 +33,50 @@ const f: Ref<any> = ref()
 const lam: Ref<any> = ref()
 const E: Ref<any> = ref()
 
-// Watchers
-watch([numberOfElements, numberOfTimeSteps], () => {
-  generateRandomValues()
-})
+const updateNumbers=()=>{
 
-watch(pyodideModule.isInitialized, (val) => {
-  if (val === true) {
-    generateRandomValues()
-  }
+let newValues:any={}
+for (let i = 1; i <= numberOfTimeSteps.value; i++) {
+  newValues[i] = 0
+}
+  console.log('updating numbers to', newValues)
+Values.value = newValues
+}
+
+const roundUpValue=(val:number, step:number=3)=>{
+  return Math.round(val * Math.pow(10, step)) / Math.pow(10, step);
+}
+
+watch([numberOfTimeSteps], () => {
+updateNumbers()
 })
+updateNumbers(  )
+
+// Watchers
+// watch([numberOfElements, numberOfTimeSteps], () => {
+//   generateRandomValues()
+// })
+
+// watch(pyodideModule.isInitialized, (val) => {
+//   if (val === true) {
+//     textBookExample()
+// caluclateValues()
+//   }
+// })
+
+
+const onRandomizeButton=() => {
+  generateRandomValues()
+}
+const periods = ref([
+    { name: 's', code: 's', value: 1, limit: 60 },
+    { name: 'm', code: 'm', value: 60, limit: 60 },
+    { name: 'h', code: 'h', value: 60*60, limit: 24 },
+    { name: 'd', code: 'd', value: 60*60*24, limit: 999999999999999 }
+]);
+
+
+const selectedPeriosd = ref( periods.value[0]);
 
 // Functions
 const generateRandomValues = () => {
@@ -40,22 +84,31 @@ const generateRandomValues = () => {
   for (let i = 1; i <= numberOfTimeSteps.value; i++) {
     dict[i] = (Math.random() * numberOfElements.value).toFixed(0)
   }
-  radomValues.value = dict
+  Values.value = dict
 }
 
 const caluclateValues = async () => {
   console.log('calculating values')
-  F.value = dystrybunataFt(radomValues.value, numberOfElements.value)
-  R.value = funkcjaNiezawdnosciRt(radomValues.value, numberOfElements.value)
-  f.value = funkcjaGestaft(radomValues.value, numberOfElements.value)
-  lam.value = funkcjaIntensywnoscilambdat(radomValues.value, numberOfElements.value)
-  E.value = rozkladTrwalosciEta(radomValues.value, numberOfElements.value)
+  F.value = dystrybunataFt(Values.value, numberOfElements.value)
+  R.value = funkcjaNiezawdnosciRt(Values.value, numberOfElements.value)
+  f.value = funkcjaGestaft(Values.value, numberOfElements.value)
+  lam.value = funkcjaIntensywnoscilambdat(Values.value, numberOfElements.value)
+  E.value = rozkladTrwalosciEta(Values.value, numberOfElements.value)
+}
+
+const timeToString = (time: number) => {
+
+  const totalSeconds = Math.floor(time )
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  return `${hours}h ${minutes}m ${seconds}s`
 }
 
 const textBookExample = () => {
   numberOfElements.value = 35
   numberOfTimeSteps.value = 10
-  radomValues.value = {
+  Values.value = {
     1: 0,
     2: 3,
     3: 3,
@@ -68,6 +121,8 @@ const textBookExample = () => {
     10: 0
   }
 }
+
+
 </script>
 
 <template>
@@ -81,16 +136,48 @@ const textBookExample = () => {
   <div class="app" v-else>
     <div class="main">
       <!-- Inputs -->
+<!-- {{ JSON.stringify(timeAddtion) }} -->
+
+
+        <!-- {{ JSON.stringify(Values) }}
+{{ JSON.stringify(numberOfElements) }} -->
       <div class="inputsWrapper hiddenDuringPrint">
+
+
+  <div class="inputContainer">
+          <label>Start pomiarów</label>
+          <DatePicker v-model="datetimeStart" class="inputNumber" fluid  showTime hourFormat="24"/>
+        </div>
+
+          <div class="inputContainer">
+          <label>Okresowść pomiarów</label>
+          <div style="flex-direction: row; display: flex; gap: 10px; align-items: center; width: 100%;">
+            <InputNumber  :min="1" v-model="durationStep" class="inputNumber" style="width: 40%;" fluid  />
+  <div class="card flex justify-content-center">
+        <Dropdown v-model="selectedPeriosd" :options="periods" optionLabel="name" placeholder="-" class="w-full md:w-14rem" />
+
+          </div>
+            </div>
+        </div>
+
+
         <div class="inputContainer">
-          <label>Number of elements</label>
-          <InputNumber v-model="numberOfElements" class="inputNumber" fluid />
+          <label>Ilość elementów</label>
+          <InputNumber v-model="numberOfElements" class="inputNumber" fluid :min="1" />
         </div>
 
         <div class="inputContainer">
-          <label>Number of time steps</label>
-          <InputNumber v-model="numberOfTimeSteps" class="inputNumber" fluid />
+          <label>Ilość pomiarów</label>
+          <InputNumber v-model="numberOfTimeSteps" class="inputNumber" fluid :min="1" />
         </div>
+
+
+            <!-- Buttons -->
+    <div class="buttonsWrapper hiddenDuringPrint">
+           <Button label="Randomize" @click="onRandomizeButton" />
+      <Button label="Calculate" @click="caluclateValues" />
+      <Button label="Textbook Example" @click="textBookExample" />
+    </div>
       </div>
 
       <!-- Results -->
@@ -106,9 +193,11 @@ const textBookExample = () => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(val, key) in radomValues" :key="key">
-              <td>{{ key }}</td>
-              <td>{{ val }}</td>
+            <tr v-for="(val, key) in Values" :key="key">
+              <td>{{ new Date(datetimeStart.getTime()  + (key*timeAddtion*1000)).toUTCString() }}</td>
+
+              <td class="tdInput"><InputNumber @value-change="(newval)=>{Values[key]=newval}" :modelValue="Values[key]" class="inputNumber" fluid :min="1" :max="numberOfElements"/>
+</td>
             </tr>
           </tbody>
         </table>
@@ -129,8 +218,8 @@ const textBookExample = () => {
           </thead>
          <tbody>
            <tr v-for="(val, key) in F" :key="key">
-              <td>{{ key }}</td>
-              <td>{{ val }}</td>
+              <td>{{ timeToString(timeAddtion*key) }}</td>
+              <td>{{ roundUpValue(val) }}</td>
             </tr>
           </tbody>
         </table>
@@ -149,8 +238,8 @@ const textBookExample = () => {
           </thead>
          <tbody>
            <tr v-for="(val, key) in R" :key="key">
-              <td>{{ key }}</td>
-              <td>{{ val }}</td>
+              <td>{{ timeToString(timeAddtion*key) }}</td>
+              <td>{{ roundUpValue(val) }}</td>
             </tr>
           </tbody>
         </table>
@@ -171,8 +260,8 @@ const textBookExample = () => {
           </thead>
          <tbody>
            <tr v-for="(val, key) in f" :key="key">
-              <td>{{ key }}</td>
-              <td>{{ val }}</td>
+              <td>{{ timeToString(timeAddtion*key) }}</td>
+              <td>{{ roundUpValue( val) }}</td>
             </tr>
           </tbody>
         </table>
@@ -187,34 +276,32 @@ const textBookExample = () => {
          <thead>
            <tr>
               <th>t</th>
-              <th>lam</th>
+              <th>λ</th>
             </tr>
           </thead>
          <tbody>
            <tr v-for="(val, key) in lam" :key="key">
-              <td>{{ key }}</td>
-              <td>{{ val }}</td>
+              <td>{{ timeToString(timeAddtion*key) }}</td>
+              <td>{{roundUpValue( val) }}</td>
             </tr>
           </tbody>
         </table>
 
     </div>
-
+  <div class ="result_element">
 
         <h3>Średnia trwałość E[T]</h3>
 <p class="resultValue">
   {{ E !== undefined && E !== null ? E.toFixed(3) : '–' }}
 </p>
+  </div>
+
 
 
       </div>
     </div>
 
-    <!-- Buttons -->
-    <div class="buttonsWrapper hiddenDuringPrint">
-      <Button label="Calculate" @click="caluclateValues" />
-      <Button label="Textbook Example" @click="textBookExample" />
-    </div>
+
   </div>
 </template>
 
@@ -331,10 +418,9 @@ html, body {
 
 /* Przyciski */
 .buttonsWrapper {
-  background-color: #333;
+
   color: #fff;
-  border-radius: 6px;
-  border: 1px solid #555;
+
   transition: background 0.2s;
   margin: 2rem 0 3rem; /* odstęp od dołu strony */
   display: flex;
@@ -343,9 +429,9 @@ html, body {
   flex-wrap: wrap;
 }
 
-.buttonsWrapper button:hover {
+/* .buttonsWrapper button:hover {
   background-color: #444 !important;
-}
+} */
 
 /* Centrowanie przy ładowaniu */
 .centerEverything {
@@ -384,7 +470,16 @@ html, body {
   }
 }
 
-
+.tdInput span *{
+  background-color: inherit !important;
+  width: 100% !important;
+  text-align: center !important;
+  height: 100% !important;
+  border: none !important;
+}
+.tdInput{
+  border: #555  solid 2px !important;
+}
 
 @media print {
   .hiddenDuringPrint {
@@ -412,19 +507,53 @@ html, body {
     .resultsTable{
       page-break-inside: avoid !important;
     }
+.resultsWrapper{
+  page-break-inside: avoid !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  width: 100vw !important;
+}
 .result_element{
   page-break-inside: avoid !important;
-  margin-bottom: 1.5rem !important;
-}
-}
 
-
+  width: 5cm !important;
+  text-align: center !important;
+  margin: 0.2cm;
+}
+.result_element *{
+  font-size: 0.8rem;
+}
 tr td:last-child {
     width: 1%;
     white-space: nowrap;
 }
 
+.resultsTable{
+width: 10rem !important
+}
+.resultsTable *{
+font-size: 0.5rem !important;
+}
+.resultsTable tr *{
+height: 0.5cm !important;
+overflow: hidden;
+padding: 0.1cm;
+}
 
+.result_element h3{
+  height: 4rem !important;
+}
+
+.tdInput *{
+  border: none !important;
+}
+input{
+  border: none !important;
+}
+.resultValue{
+  border: none !important;
+}
+}
 
 
 </style>
