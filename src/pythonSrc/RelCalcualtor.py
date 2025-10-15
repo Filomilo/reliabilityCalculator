@@ -46,7 +46,11 @@ def funkcjaGestaft(brokenElementsAfterTime: dict[int, int], amountOfElementsTota
         if amountOfElementsTotal * delta_t == 0:
             value = 0.0
         else:
-            value = brokenElementsAfterTime.get(time, 0) / (amountOfElementsTotal * delta_t)
+            licznik= amountOfElementsTotal * delta_t
+            if licznik <= 0:
+                value = 0.0
+            else:
+             value = brokenElementsAfterTime.get(time, 0) / (licznik)
 
         if math.isnan(value) or math.isinf(value) or value < 0:
             value = 0.0
