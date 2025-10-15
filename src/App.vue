@@ -20,7 +20,7 @@ const numberOfTimeSteps: Ref<number> = ref(10)
 const Values: Ref<any> = ref({})
 
 
-const timeAddtion:ComputedRef<num>=computed(()=>{
+const timeAddtion:ComputedRef<number>=computed(()=>{
   return durationStep.value * (selectedPeriosd.value as any) .value
 })
 
@@ -104,7 +104,9 @@ const timeToString = (time: number) => {
   const seconds = totalSeconds % 60
   return `${hours}h ${minutes}m ${seconds}s`
 }
+  const updateModelType = (val: Date | null) => {
 
+  }
 const textBookExample = () => {
   numberOfElements.value = 35
   numberOfTimeSteps.value = 10
@@ -146,7 +148,7 @@ const textBookExample = () => {
 
   <div class="inputContainer">
           <label>Start pomiarów</label>
-          <DatePicker v-model="datetimeStart" class="inputNumber" fluid  showTime hourFormat="24"/>
+          <DatePicker v-model="datetimeStart" class="inputNumber" fluid  showTime hourFormat="24" :updateModelType="undefined" />
         </div>
 
           <div class="inputContainer">
