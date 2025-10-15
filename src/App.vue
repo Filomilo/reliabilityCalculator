@@ -72,7 +72,7 @@ const textBookExample = () => {
 
 <template>
   <div
-    class="app centerEverything"
+    class="app centerEverything hiddenDuringPrint"
     v-if="pyodideModule.isInitialized.value == false"
   >
     <Loading label="Loading.." />
@@ -81,7 +81,7 @@ const textBookExample = () => {
   <div class="app" v-else>
     <div class="main">
       <!-- Inputs -->
-      <div class="inputsWrapper">
+      <div class="inputsWrapper hiddenDuringPrint">
         <div class="inputContainer">
           <label>Number of elements</label>
           <InputNumber v-model="numberOfElements" class="inputNumber" fluid />
@@ -95,12 +95,14 @@ const textBookExample = () => {
 
       <!-- Results -->
       <div class="resultsWrapper">
-        <h3>Generated Values</h3>
+
+    <div class ="result_element">
+            <h3>Zarejestrowane uszkodzone elementy</h3>
         <table class="resultsTable">
           <thead>
             <tr>
-              <th>t</th>
-              <th>Value</th>
+              <th>Moment</th>
+              <th>Uszkodzone elementy</th>
             </tr>
           </thead>
           <tbody>
@@ -111,7 +113,13 @@ const textBookExample = () => {
           </tbody>
         </table>
 
-       <h3>F*(t)</h3>
+    </div>
+
+
+    <div class ="result_element">
+
+
+           <h3>Empiryczna dystrybuanta trwałości czasu pracy do uszkodzenia F*(t)</h3>
         <table class="resultsTable">
          <thead>
            <tr>
@@ -127,7 +135,11 @@ const textBookExample = () => {
           </tbody>
         </table>
 
-        <h3>R*(t)</h3>
+
+    </div>
+
+    <div class ="result_element">
+            <h3>Funkcja niezawodnośći R*(t)</h3>
         <table class="resultsTable">
          <thead>
            <tr>
@@ -143,7 +155,13 @@ const textBookExample = () => {
           </tbody>
         </table>
 
-        <h3>f*(t)</h3>
+
+    </div>
+
+
+          <div class ="result_element">
+
+                  <h3>Funkcja gęstości prawdobieństwa  f*(t)</h3>
         <table class="resultsTable">
          <thead>
            <tr>
@@ -159,7 +177,12 @@ const textBookExample = () => {
           </tbody>
         </table>
 
-        <h3>lam*(t)</h3>
+
+
+          </div>
+
+    <div class ="result_element">
+            <h3>Funkcja intensywnośći uszkodzeń λ*(t)</h3>
         <table class="resultsTable">
          <thead>
            <tr>
@@ -175,17 +198,20 @@ const textBookExample = () => {
           </tbody>
         </table>
 
-        <h3>E[T]</h3>
+    </div>
+
+
+        <h3>Średnia trwałość E[T]</h3>
 <p class="resultValue">
   {{ E !== undefined && E !== null ? E.toFixed(3) : '–' }}
 </p>
 
-        
+
       </div>
     </div>
 
     <!-- Buttons -->
-    <div class="buttonsWrapper">
+    <div class="buttonsWrapper hiddenDuringPrint">
       <Button label="Calculate" @click="caluclateValues" />
       <Button label="Textbook Example" @click="textBookExample" />
     </div>
@@ -200,7 +226,7 @@ html, body {
   background-color: #121212;
   color: #f5f5f5;
   min-height: 100vh;
-  width: 100%;  
+  width: 100%;
 }
 </style>
 
@@ -211,12 +237,12 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: #121212; 
+  background-color: #121212;
   min-height: 100vh;
   width: 100%;
   padding: 2rem;
-  box-sizing: border-box;         
-  color: #f5f5f5;            
+  box-sizing: border-box;
+  color: #f5f5f5;
 }
 /* Layout główny */
 .main {
@@ -357,4 +383,48 @@ html, body {
    padding: 0.3rem 0.5rem;
   }
 }
+
+
+
+@media print {
+  .hiddenDuringPrint {
+    display: none !important;
+  }
+
+
+  .resultsWrapper{
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .app {
+    padding: 1cm !important;
+  }
+  .resultsTable th, .resultsTable td {
+    border: 1px solid #000 !important;
+  }
+  .resultsTable th {
+    background-color: #ccc !important;
+    -webkit-print-color-adjust: exact;
+  }
+  .resultValue {
+    border: 1px solid #000 !important;  }
+
+    .resultsTable{
+      page-break-inside: avoid !important;
+    }
+.result_element{
+  page-break-inside: avoid !important;
+  margin-bottom: 1.5rem !important;
+}
+}
+
+
+tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+
+
+
+
 </style>
