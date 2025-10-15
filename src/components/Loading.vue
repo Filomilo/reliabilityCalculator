@@ -23,7 +23,7 @@ const props = defineProps({
 .loader {
   width: 50px;
   aspect-ratio: 1;
-  color: #000;
+  color: #ffffff;
   border: 2px solid;
   display: grid;
   box-sizing: border-box;
@@ -56,7 +56,7 @@ const props = defineProps({
   align-items:center;
   gap:10px;
   font-size:1.5rem;
-  color:#444;
+  color:#a5a5a5;
 
 }
 </style>
