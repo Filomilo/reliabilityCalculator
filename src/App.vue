@@ -13,6 +13,8 @@ import {
   funkcjaIntensywnoscilambdat,
   rozkladTrwalosciEta
 } from './modules/RelCalculator'
+import { Chart, Grid, Line } from 'vue3-charts'
+import type { ChartAxis } from 'vue3-charts/dist/types'
 
 // Refs
 const numberOfElements: Ref<number> = ref(10)
@@ -32,6 +34,7 @@ const R: Ref<any> = ref()
 const f: Ref<any> = ref()
 const lam: Ref<any> = ref()
 const E: Ref<any> = ref()
+
 
 const updateNumbers=()=>{
 
@@ -124,6 +127,87 @@ const textBookExample = () => {
   }
 }
 
+const keyToDate=(key: number):String => {
+  return new Date(datetimeStart.value.getTime()  + (key*timeAddtion.value*1000)).toUTCString()
+}
+
+
+
+
+
+
+import { Bar } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { color } from 'chart.js/helpers'
+import {  registerables } from 'chart.js'
+import { Colors } from 'chart.js';
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,...registerables,Colors)
+
+
+
+const FtGraphData=computed(()=>{
+  return {
+        labels: Object.keys(F.value || {}).map((key)=> timeToString(timeAddtion.value*Number(key))),
+        datasets: [
+          {
+            label: 'F*(t)',
+            data: Object.values(F.value || {}),
+            borderColor: '#f87979',
+            backgroundColor: 'rgba(248, 121, 121, 0.5)',
+          },
+        ],
+      }
+})
+
+
+
+const RtGraphData=computed(()=>{
+  return {
+        labels: Object.keys(R.value || {}).map((key)=> timeToString(timeAddtion.value*Number(key))),
+        datasets: [
+          {
+            label: 'R*(t)',
+            data: Object.values(R.value || {}),
+            borderColor: '#f87979',
+            backgroundColor: 'rgba(248, 121, 121, 0.5)',
+          },
+        ],
+      }
+})
+
+const ftGraphData=computed(()=>{
+  return {
+        labels: Object.keys(f.value || {}).map((key)=> timeToString(timeAddtion.value*Number(key))),
+        datasets: [
+          {
+            label: 'f*(t)',
+            data: Object.values(f.value || {}),
+            borderColor: '#f87979',
+            backgroundColor: 'rgba(248, 121, 121, 0.5)',
+          },
+        ],
+      }
+})
+
+const lamGraphData=computed(()=>{
+  return {
+        labels: Object.keys(lam.value || {}).map((key)=> timeToString(timeAddtion.value*Number(key))),
+        datasets: [
+          {
+            label: 'λ*(t)',
+            data: Object.values(lam.value || {}),
+            borderColor: '#f87979',
+            backgroundColor: 'rgba(248, 121, 121, 0.5)',
+          },
+        ],
+      }
+})
+
+
+const chartOptions= {
+        responsive: true
+      }
 
 </script>
 
@@ -136,6 +220,8 @@ const textBookExample = () => {
   </div>
 
   <div class="app" v-else>
+
+
     <div class="main">
       <!-- Inputs -->
 <!-- {{ JSON.stringify(timeAddtion) }} -->
@@ -196,14 +282,13 @@ const textBookExample = () => {
           </thead>
           <tbody>
             <tr v-for="(val, key) in Values" :key="key">
-              <td>{{ new Date(datetimeStart.getTime()  + (key*timeAddtion*1000)).toUTCString() }}</td>
+              <td>{{ keyToDate(key) }}</td>
 
               <td class="tdInput"><InputNumber @value-change="(newval)=>{Values[key]=newval}" :modelValue="Values[key]" class="inputNumber" fluid :min="1" :max="numberOfElements"/>
 </td>
             </tr>
           </tbody>
         </table>
-
     </div>
 
 
@@ -225,7 +310,18 @@ const textBookExample = () => {
             </tr>
           </tbody>
         </table>
+<div
+ :style="FtGraphData.labels.length>0?'':'display: none;'"
+  class="graphContainer"
+ >
+  <Bar
 
+    id="my-chart-id-Ft"
+    :options="chartOptions"
+    :data="FtGraphData as any"
+
+  />
+</div>
 
     </div>
 
@@ -245,7 +341,18 @@ const textBookExample = () => {
             </tr>
           </tbody>
         </table>
+<div
+ :style="FtGraphData.labels.length>0?'':'display: none;'"
+  class="graphContainer"
+ >
+  <Bar
 
+    id="my-chart-id-Ft"
+    :options="chartOptions"
+    :data="RtGraphData as any"
+
+  />
+</div>
 
     </div>
 
@@ -268,7 +375,18 @@ const textBookExample = () => {
           </tbody>
         </table>
 
+<div
+ :style="FtGraphData.labels.length>0?'':'display: none;'"
+ class="graphContainer"
+ >
+  <Bar
 
+    id="my-chart-id-Ft"
+    :options="chartOptions"
+    :data="ftGraphData as any"
+
+  />
+</div>
 
           </div>
 
@@ -288,7 +406,18 @@ const textBookExample = () => {
             </tr>
           </tbody>
         </table>
+<div
+ :style="FtGraphData.labels.length>0?'':'display: none;'"
+  class="graphContainer"
+ >
+  <Bar
 
+    id="my-chart-id-Ft"
+    :options="chartOptions"
+    :data="lamGraphData  as any"
+
+  />
+</div>
     </div>
   <div class ="result_element">
 
@@ -320,6 +449,15 @@ html, body {
 </style>
 
 <style scoped>
+
+.graphContainer {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+
 /* Tło aplikacji*/
 .app {
   display: flex;
