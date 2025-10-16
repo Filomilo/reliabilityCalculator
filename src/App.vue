@@ -347,7 +347,7 @@ const chartOptions= {
  >
   <Bar
 
-    id="my-chart-id-Ft"
+    id="my-chart-id-Rt"
     :options="chartOptions"
     :data="RtGraphData as any"
 
@@ -381,7 +381,7 @@ const chartOptions= {
  >
   <Bar
 
-    id="my-chart-id-Ft"
+    id="my-chart-id-ft"
     :options="chartOptions"
     :data="ftGraphData as any"
 
@@ -412,14 +412,14 @@ const chartOptions= {
  >
   <Bar
 
-    id="my-chart-id-Ft"
+    id="my-chart-id-lam"
     :options="chartOptions"
     :data="lamGraphData  as any"
 
   />
 </div>
     </div>
-  <div class ="result_element">
+  <div class ="result_element" id="final_result_elemnt">
 
         <h3>Średnia trwałość E[T]</h3>
 <p class="resultValue">
@@ -620,8 +620,9 @@ html, body {
 .tdInput{
   border: #555  solid 2px !important;
 }
-
 @media print {
+
+
   .hiddenDuringPrint {
     display: none !important;
   }
@@ -645,17 +646,13 @@ html, body {
     border: 1px solid #000 !important;  }
 
     .resultsTable{
-      page-break-inside: avoid !important;
     }
 .resultsWrapper{
-  page-break-inside: avoid !important;
   display: flex !important;
   flex-wrap: wrap !important;
   width: 100vw !important;
 }
 .result_element{
-  page-break-inside: avoid !important;
-
   width: 5cm !important;
   text-align: center !important;
   margin: 0.2cm;
@@ -693,7 +690,126 @@ input{
 .resultValue{
   border: none !important;
 }
+
+.graphContainer {
+  width: 50cm !important;
+  overflow: hidden;
+}
+
+.graphContainer canvas {
+  width: 100% !important;
+  height: auto !important;
+  width: 10cm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: auto !important;
+
+}
+.graphContainer *{
+  margin: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 10cm !important;
 }
 
 
+.result_element{
+  margin: 0 !important;
+   width: 10cm !important;
+   overflow: hidden;
+}
+
+
+.graphContainer{
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.graphContainer canvas{
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.result_element {
+  justify-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.result_element{
+
+}
+
+.result_element{
+    aspect-ratio: 210 / 297 !important;
+}
+
+#__vue-devtools-container__ {
+  display: none !important;
+}
+
+.resultsWrapper{
+  border: none !important;
+  box-shadow: none !important;
+  background-color: none !important;
+}
+.main{
+  background-color: none !important;
+}
+.app{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+body html{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+#app{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+html, body *{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.resultsWrapper *{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.resultsWrapper{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+:root *{
+  background-color: #fff !important;
+}
+
+.resultsWrapper{
+}
+
+.result_element{
+  page-break-inside: avoid !important;
+  width: 20cm !important ;
+}
+
+#final_result_elemnt{
+  width: 10cm !important ;
+  height: 2cm !important ;
+}
+
+.result_element {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.result_element *{
+
+}
+}
 </style>
