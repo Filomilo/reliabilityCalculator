@@ -294,7 +294,7 @@ const textBookExample = () => {
 
         <h3>Średnia trwałość E[T]</h3>
 <p class="resultValue">
-  {{ E !== undefined && E !== null ? E.toFixed(3) : '–' }}
+  {{ E !== undefined && E !== null ? (E/durationStep).toFixed(3) : '–' }} {{ selectedPeriosd?.name }}
 </p>
   </div>
 
