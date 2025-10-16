@@ -20,11 +20,9 @@
     "chart.js": "^4.5.1",
     "primevue": "^4.4.0",
     "vue": "^3.5.22",
-    "vue-chart-3": "^3.1.8",
     "vue-chartjs": "^5.3.2",
     "vue-plugin-load-script": "^2.x.x",
-    "vue-router": "^4.5.1",
-    "vue3-charts": "^1.1.33"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",

@@ -13,8 +13,6 @@ import {
   funkcjaIntensywnoscilambdat,
   rozkladTrwalosciEta
 } from './modules/RelCalculator'
-import { Chart, Grid, Line } from 'vue3-charts'
-import type { ChartAxis } from 'vue3-charts/dist/types'
 
 // Refs
 const numberOfElements: Ref<number> = ref(10)
